@@ -1,4 +1,4 @@
-name: Build APK with KvDeveloper
+name: Build APK with Buildozer
 on: [push, pull_request]
 jobs:
   build-android:
@@ -8,19 +8,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          python-version: '3.9'
-
-      - name: Install KvDeveloper and Build
-        run: |
-          pip install kvdeveloper
-          kvdeveloper build apk --debug
-        shell: bash
+          workdir: .
+          buildozer_version: master
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: Guboshlepka-APK
-          path: bin/*.apk
+          path: ${{ steps.buildozer.outputs.filename }}
