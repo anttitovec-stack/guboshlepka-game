@@ -1,4 +1,4 @@
-name: Build APK Manually
+name: Build APK with Manual SDK
 on: [push, pull_request]
 jobs:
   build-android:
@@ -13,19 +13,31 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install System Dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool libffi-dev libssl-dev zlib1g-dev cmake
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip \
+            autoconf libtool libffi-dev libssl-dev zlib1g-dev cmake
+
+      - name: Install Android SDK command-line tools
+        run: |
+          SDK_ROOT=$HOME/android-sdk
+          mkdir -p $SDK_ROOT
+          cd $SDK_ROOT
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-11076708_latest.zip
+          mkdir -p latest/bin
+          mv cmdline-tools/* latest/
+          # Принимаем лицензию
+          yes | ./latest/bin/sdkmanager --sdk_root=$SDK_ROOT --licenses
+          # Устанавливаем необходимые пакеты SDK
+          ./latest/bin/sdkmanager --sdk_root=$SDK_ROOT "build-tools;34.0.0" "platforms;android-34"
+          echo "ANDROID_HOME=$SDK_ROOT" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> $GITHUB_ENV
 
       - name: Install Buildozer
         run: |
           pip install --upgrade buildozer
-
-      - name: Setup Android SDK Licenses
-        run: |
-          mkdir -p $HOME/.android
-          echo "y" | sdkmanager --sdk_root=$HOME/.android --licenses
 
       - name: Build APK
         run: |
