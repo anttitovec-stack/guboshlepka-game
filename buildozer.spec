@@ -12,6 +12,11 @@ version = 0.1
 p4a.branch = develop
 android.gradle_dependencies = com.android.tools.build:gradle:8.1.0
 android.gradle_args = --no-daemon --stacktrace
+# Задаём конкретную стабильную версию Python для сборки
+p4a.python_version = 3.11
+
+# Отключаем ненужные предупреждения
+p4a.extra_android_args = --verbose
 # (str) Source code where the main.py live
 source.dir = .
 
