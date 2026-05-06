@@ -9,6 +9,9 @@ package.name = guboshlepka
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
 version = 0.1
+p4a.branch = develop
+android.gradle_dependencies = com.android.tools.build:gradle:8.1.0
+android.gradle_args = --no-daemon --stacktrace
 # (str) Source code where the main.py live
 source.dir = .
 
