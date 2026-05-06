@@ -1,0 +1,26 @@
+name: Build APK with KvDeveloper
+on: [push, pull_request]
+jobs:
+  build-android:
+    name: Build for Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install KvDeveloper and Build
+        run: |
+          pip install kvdeveloper
+          kvdeveloper build apk --debug
+        shell: bash
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Guboshlepka-APK
+          path: bin/*.apk
