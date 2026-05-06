@@ -1,4 +1,4 @@
-name: Build APK (Fixed)
+name: Build APK (Final)
 on: [push]
 jobs:
   build:
@@ -14,17 +14,13 @@ jobs:
 
       - name: Setup Android SDK
         run: |
-          # Создаём правильную структуру папок для SDK
           mkdir -p $HOME/android-sdk/cmdline-tools
           cd $HOME/android-sdk/cmdline-tools
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
           unzip -q commandlinetools-linux-9477386_latest.zip
           mv cmdline-tools latest
-          # Принимаем лицензии
           yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-          # Устанавливаем всё необходимое
           $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
-          # Записываем переменные окружения
           echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
 
@@ -32,6 +28,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Ensure 'python' command exists
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y python-is-python3
 
       - name: Install Buildozer
         run: pip install buildozer
