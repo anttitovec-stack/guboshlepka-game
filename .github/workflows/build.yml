@@ -3,7 +3,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: kivy/python-for-android:python3.11
+    container: kivy/buildozer
     steps:
       - uses: actions/checkout@v4
       - name: Build APK
