@@ -11,5 +11,6 @@ android.permissions = VIBRATE
 orientation = portrait
 android.accept_sdk_license = True
 p4a.branch = develop
+p4a.python_version = 3.11
 android.gradle_dependencies = com.android.tools.build:gradle:8.1.0
 android.gradle_args = --no-daemon --stacktrace
