@@ -29,13 +29,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Ensure 'python' command exists
+      - name: Install system dependencies
         run: |
           sudo apt-get update -y
           sudo apt-get install -y python-is-python3
 
-      - name: Install Buildozer
-        run: pip install buildozer
+      - name: Install Buildozer and Cython
+        run: |
+          pip install --upgrade buildozer cython
 
       - name: Build APK
         run: buildozer -v android debug
